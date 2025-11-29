@@ -6,7 +6,7 @@ App({
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');
     } else {
       wx.cloud.init({
-        env: 'prod-2gyfay7ve535c92a', // 你的云托管环境ID
+        env: 'convert-easy-9gy01nt7e03d9579', // 你的云托管环境ID
         traceUser: true,
       });
     }
