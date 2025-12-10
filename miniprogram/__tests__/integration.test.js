@@ -30,7 +30,7 @@ global.getApp = jest.fn().mockReturnValue(null);
 const { createDocumentConvertTask, createAudioConvertTask, queryTask, pollTaskUntilComplete, normalizeFileUrl } = require('../utils/api');
 const { chooseMessageFile, downloadFile, isPreviewSupported } = require('../utils/file');
 const { getAllowedExtensions, getFormatDisplayName, DOCUMENT_CONVERSION_MAP, AUDIO_CONVERSION_MAP } = require('../utils/formats');
-const { formatSize, getExt, sleep } = require('../utils/common');
+const { formatSize, getExt } = require('../utils/common');
 
 describe('文档转换流程集成测试', () => {
   beforeEach(() => {

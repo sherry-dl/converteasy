@@ -66,13 +66,13 @@
   border-radius: 12rpx;
   margin-bottom: 16rpx;
   /* 关键：确保内容溢出时布局稳定 */
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 .file-info {
   flex: 1;
   /* 关键：允许 flex 子项收缩到 0，防止长文本撑开容器 */
-  min-width: 0; 
+  min-width: 0;
   margin-right: 20rpx; /* 增加与按钮组的间距 */
 }
 
@@ -89,7 +89,7 @@
 
 .file-actions {
   /* 关键：防止按钮组被压缩 */
-  flex-shrink: 0; 
+  flex-shrink: 0;
   text-align: right;
 }
 

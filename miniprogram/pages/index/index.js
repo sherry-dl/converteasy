@@ -15,7 +15,7 @@ Page({
       },
       {
         id: 'audio',
-        name: '音频转换', 
+        name: '音频转换',
         icon: '🎵',
         description: 'MP3、WAV、AAC、FLAC等格式互转',
         url: '/pages/audio/audio'
@@ -26,7 +26,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  onLoad(_options) {
 
   },
 
@@ -86,6 +86,6 @@ Page({
     return {
       title: '全能格式转换工具',
       path: '/pages/index/index'
-    }
+    };
   }
-})
+});

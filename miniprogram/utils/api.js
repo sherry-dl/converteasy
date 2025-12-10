@@ -6,7 +6,7 @@
 const { sleep } = require('./common');
 
 // 正式域名
-const BASE_URL = "https://convertease.site";
+const BASE_URL = 'https://convertease.site';
 
 /**
  * 获取 API 基础地址
@@ -53,13 +53,13 @@ function normalizeFileUrl(url) {
  * @param {object} data - 请求数据
  * @returns {Promise<any>}
  */
-function httpRequest(url, method = "GET", data = null) {
+function httpRequest(url, method = 'GET', data = null) {
   return new Promise((resolve, reject) => {
     const options = {
       url,
       method,
       header: {
-        "content-type": "application/json"
+        'content-type': 'application/json'
       },
       success: (res) => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -70,8 +70,8 @@ function httpRequest(url, method = "GET", data = null) {
         }
       },
       fail: (err) => {
-        console.error("[httpRequest fail]", err);
-        reject(new Error(err.errMsg || "请求失败"));
+        console.error('[httpRequest fail]', err);
+        reject(new Error(err.errMsg || '请求失败'));
       }
     };
 
@@ -95,12 +95,12 @@ function httpUploadFile(url, filePath, formData) {
     wx.uploadFile({
       url,
       filePath,
-      name: "file",
+      name: 'file',
       formData,
       success: (res) => {
         try {
-          console.log("[uploadFile] status=", res.statusCode, "data=", res.data);
-          const data = JSON.parse(res.data || "{}");
+          console.log('[uploadFile] status=', res.statusCode, 'data=', res.data);
+          const data = JSON.parse(res.data || '{}');
           if (res.statusCode >= 200 && res.statusCode < 300 && data.taskId) {
             resolve({ taskId: data.taskId });
           } else {
@@ -108,14 +108,14 @@ function httpUploadFile(url, filePath, formData) {
             reject(new Error((data && data.message) || `上传失败(${res.statusCode}) ${raw}`));
           }
         } catch (e) {
-          const snippet = (res && typeof res.data === 'string') ? res.data.slice(0, 200) : "";
-          reject(new Error("响应解析失败 " + snippet));
+          const snippet = (res && typeof res.data === 'string') ? res.data.slice(0, 200) : '';
+          reject(new Error('响应解析失败 ' + snippet));
         }
       },
       fail: (err) => {
-        console.error("[uploadFile fail]", err);
-        reject(new Error(err.errMsg || "上传请求失败"));
-      },
+        console.error('[uploadFile fail]', err);
+        reject(new Error(err.errMsg || '上传请求失败'));
+      }
     });
   });
 }
@@ -147,7 +147,7 @@ function createDocumentConvertTask({ filePath, targetFormat, sourceFormat }) {
 function createAudioConvertTask({ filePath, targetFormat }) {
   const url = `${getBaseUrl()}/convert/upload`;
   return httpUploadFile(url, filePath, {
-    category: "audio",
+    category: 'audio',
     target: targetFormat
   });
 }
@@ -159,7 +159,7 @@ function createAudioConvertTask({ filePath, targetFormat }) {
  */
 function queryTask(taskId) {
   const url = `${getBaseUrl()}/convert/task/${taskId}`;
-  return httpRequest(url, "GET");
+  return httpRequest(url, 'GET');
 }
 
 /**
@@ -185,24 +185,24 @@ async function pollTaskUntilComplete(taskId, queryFn, onProgress, timeout = 5 * 
 
     console.log('任务状态:', status);
 
-    if (status.state === "finished") {
+    if (status.state === 'finished') {
       const fileUrl = status.url || status.downloadUrl;
       if (fileUrl) {
         console.log('转换成功，文件链接:', fileUrl);
         return { url: fileUrl };
       } else {
-        throw new Error("转换完成但缺少文件链接");
+        throw new Error('转换完成但缺少文件链接');
       }
     }
 
-    if (status.state === "error") {
-      throw new Error(status.message || "转换失败");
+    if (status.state === 'error') {
+      throw new Error(status.message || '转换失败');
     }
 
     await sleep(interval);
   }
 
-  throw new Error("转换超时");
+  throw new Error('转换超时');
 }
 
 /**
@@ -212,7 +212,7 @@ async function pollTaskUntilComplete(taskId, queryFn, onProgress, timeout = 5 * 
  */
 function loadSupportedFormats(category) {
   const url = `${getBaseUrl()}/supported-formats?category=${category}`;
-  return httpRequest(url, "GET");
+  return httpRequest(url, 'GET');
 }
 
 /**
@@ -221,7 +221,7 @@ function loadSupportedFormats(category) {
  */
 function healthCheck() {
   const url = `${getBaseUrl()}/health`;
-  return httpRequest(url, "GET");
+  return httpRequest(url, 'GET');
 }
 
 module.exports = {

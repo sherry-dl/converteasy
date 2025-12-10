@@ -1,10 +1,9 @@
-import os
-from io import BytesIO
 from pathlib import Path
 from fastapi.testclient import TestClient
 import pytest
 
 from app.utils.task_manager import task_manager
+
 
 @pytest.fixture(autouse=True)
 def patch_conversion(monkeypatch):
@@ -23,6 +22,7 @@ def patch_conversion(monkeypatch):
         task.download_url = f"/download/{out_path.name}"
         task.preview_url = f"/preview/{out_path.name}"
         from app.models import TaskState
+
         task.state = TaskState.FINISHED
         task_manager.update_task(task)
 

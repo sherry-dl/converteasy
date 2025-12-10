@@ -76,9 +76,9 @@ export async function downloadFileToAlbum(fileUrl: string): Promise<void> {
       const baseUrl = getBaseUrl();
       downloadUrl = baseUrl + fileUrl;
     }
-    
+
     console.log("下载文件:", downloadUrl);
-    
+
     wx.downloadFile({
       url: downloadUrl,
       success: (res) => {
@@ -86,10 +86,10 @@ export async function downloadFileToAlbum(fileUrl: string): Promise<void> {
           reject(new Error("下载失败，未获取到临时文件路径"));
           return;
         }
-        
+
         const tempPath = res.tempFilePath;
         console.log("文件下载到临时路径:", tempPath);
-        
+
         // 直接打开文档预览
         wx.openDocument({
           filePath: tempPath,

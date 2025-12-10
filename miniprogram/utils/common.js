@@ -9,9 +9,9 @@
  * @returns {string} 格式化后的文件大小字符串
  */
 function formatSize(bytes) {
-  if (bytes < 1024) return bytes + " B";
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
 
 /**
@@ -45,17 +45,17 @@ function copyToClipboard(text) {
       data: text,
       success: () => {
         wx.showToast({
-          title: "链接已复制，可分享给好友",
-          icon: "none"
+          title: '链接已复制，可分享给好友',
+          icon: 'none'
         });
         resolve();
       },
       fail: () => {
         wx.showToast({
-          title: "复制失败",
-          icon: "none"
+          title: '复制失败',
+          icon: 'none'
         });
-        reject(new Error("复制失败"));
+        reject(new Error('复制失败'));
       }
     });
   });
@@ -65,7 +65,7 @@ function copyToClipboard(text) {
  * 显示加载提示
  * @param {string} title - 提示文字
  */
-function showLoading(title = "加载中...") {
+function showLoading(title = '加载中...') {
   wx.showLoading({ title, mask: true });
 }
 

@@ -34,7 +34,7 @@ Page({
     targetIndex: -1,
     availableTargets: [],
     itemDisplayNames: [],
-    targetFormatNames: "",
+    targetFormatNames: '',
 
     // 转换映射
     conversionMap: { ...DOCUMENT_CONVERSION_MAP },
@@ -43,7 +43,7 @@ Page({
     fileList: [],
     converting: false,
     progress: 0,
-    progressText: "",
+    progressText: '',
 
     // 格式显示名称
     formatDisplayNames: DOCUMENT_FORMAT_DISPLAY_NAMES
@@ -73,7 +73,7 @@ Page({
         this.setData({ conversionMap: result.document.supportedConversions });
       }
     } catch (error) {
-      console.warn("加载支持的格式失败，使用默认配置");
+      console.warn('加载支持的格式失败，使用默认配置');
     }
   },
 
@@ -147,7 +147,7 @@ Page({
         path: file.path,
         name: file.name,
         size: formatSize(file.size),
-        status: "pending",
+        status: 'pending',
         taskId: undefined,
         downloadUrl: undefined,
         sourceFormat: sourceFormat,
@@ -175,16 +175,16 @@ Page({
       return;
     }
 
-    this.setData({ converting: true, progress: 0, progressText: "准备转换..." });
+    this.setData({ converting: true, progress: 0, progressText: '准备转换...' });
 
     const total = this.data.fileList.filter(f => f.status === 'pending').length;
     let done = 0;
 
     for (let i = 0; i < this.data.fileList.length; i++) {
       const item = this.data.fileList[i];
-      if (item.status !== "pending") continue;
+      if (item.status !== 'pending') continue;
 
-      this._updateFileStatus(i, "processing");
+      this._updateFileStatus(i, 'processing');
 
       try {
         const target = this.data.availableTargets[this.data.targetIndex];
@@ -205,13 +205,13 @@ Page({
         this.setData({ progress, progressText: `已转换 ${done}/${total} 个文件` });
       } catch (err) {
         console.error('转换失败:', err);
-        this._updateFileStatus(i, "error");
+        this._updateFileStatus(i, 'error');
         showToast(`文件 ${item.name} 转换失败`, 'none');
       }
     }
 
     this.setData({ converting: false });
-    showToast("批量转换完成", 'success');
+    showToast('批量转换完成', 'success');
   },
 
   async _pollTask(index, taskId) {
@@ -228,7 +228,7 @@ Page({
     const next = [...this.data.fileList];
     next[index] = {
       ...next[index],
-      status: "success",
+      status: 'success',
       downloadUrl: result.url,
       taskId
     };
@@ -255,7 +255,7 @@ Page({
     const item = this.data.fileList[index];
     if (!item?.downloadUrl) return;
 
-    showLoading("加载中...");
+    showLoading('加载中...');
     try {
       const fileUrl = normalizeFileUrl(item.downloadUrl);
       const tempPath = await downloadFileUtil(fileUrl);
@@ -265,7 +265,7 @@ Page({
         filePath: tempPath,
         showMenu: true,
         success: () => console.log('预览成功'),
-        fail: (err) => {
+        fail: (_err) => {
           showToast('无法预览该格式，请尝试下载', 'none');
         }
       });
@@ -304,7 +304,7 @@ Page({
     const item = this.data.fileList[index];
     if (!item?.downloadUrl) return;
 
-    showLoading("准备分享...");
+    showLoading('准备分享...');
 
     try {
       const fileUrl = normalizeFileUrl(item.downloadUrl);
@@ -334,7 +334,7 @@ Page({
   _copyLinkFallback(url) {
     wx.setClipboardData({
       data: url,
-      success: () => showToast("已复制文件链接"),
+      success: () => showToast('已复制文件链接')
     });
   },
 

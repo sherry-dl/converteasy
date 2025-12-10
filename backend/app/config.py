@@ -1,6 +1,7 @@
 """
 应用配置
 """
+
 import os
 from pathlib import Path
 from pydantic_settings import BaseSettings
@@ -9,49 +10,55 @@ from typing import List, Dict
 
 class Settings(BaseSettings):
     """应用配置类"""
-    
+
     # 服务器配置
     PORT: int = int(os.getenv("PORT", "8080"))
     HOST: str = os.getenv("HOST", "0.0.0.0")
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
-    
+
     # 目录配置
     BASE_DIR: Path = Path(__file__).parent.parent
     PUBLIC_DIR: str = os.getenv("PUBLIC_DIR", "public")
     UPLOAD_DIR: str = os.getenv("UPLOAD_DIR", "uploads")
     SCRIPTS_DIR: Path = Path(__file__).parent / "scripts"
-    
+
     # 文件限制
     MAX_FILE_SIZE_MB: int = 100
     MAX_FILE_SIZE_BYTES: int = MAX_FILE_SIZE_MB * 1024 * 1024
-    
+
     # 允许的文件扩展名
     ALLOWED_DOC_EXT: List[str] = [
-        ".pdf", ".doc", ".docx", ".ppt", ".pptx", 
-        ".xls", ".xlsx", ".txt", ".rtf", ".html"
+        ".pdf",
+        ".doc",
+        ".docx",
+        ".ppt",
+        ".pptx",
+        ".xls",
+        ".xlsx",
+        ".txt",
+        ".rtf",
+        ".html",
     ]
-    ALLOWED_AUDIO_EXT: List[str] = [
-        ".mp3", ".wav", ".aac", ".flac", ".m4a", ".ogg", ".wma"
-    ]
-    
+    ALLOWED_AUDIO_EXT: List[str] = [".mp3", ".wav", ".aac", ".flac", ".m4a", ".ogg", ".wma"]
+
     # 外部工具路径
     FFMPEG_PATH: str = os.getenv("FFMPEG_PATH", "ffmpeg")
     SOFFICE_PATH: str = os.getenv("SOFFICE_PATH", "soffice")
     PYTHON_PATH: str = os.getenv("PYTHON_PATH", "python")
-    
+
     # 公网访问 URL
     PUBLIC_BASE_URL: str = os.getenv("PUBLIC_BASE_URL", "http://localhost:8080")
-    
+
     # 转换配置
     MAX_CONCURRENT: int = 2
     CONVERSION_TIMEOUT: int = 120  # 秒
     CLEANUP_INTERVAL: int = 3600  # 秒（1小时）
     FILE_EXPIRE_TIME: int = 24 * 60 * 60  # 秒（24小时）
-    
+
     # 速率限制
     RATE_LIMIT_POINTS: int = 120
     RATE_LIMIT_DURATION: int = 60  # 秒
-    
+
     # 音频质量设置
     AUDIO_QUALITY: Dict[str, str] = {
         "mp3": "-b:a 192k -ac 2",
@@ -59,9 +66,9 @@ class Settings(BaseSettings):
         "aac": "-b:a 128k -ac 2",
         "flac": "-c:a flac -compression_level 5",
         "ogg": "-c:a libvorbis -qscale:a 5",
-        "m4a": "-c:a aac -b:a 128k -ac 2"
+        "m4a": "-c:a aac -b:a 128k -ac 2",
     }
-    
+
     class Config:
         env_file = ".env"
         case_sensitive = True
@@ -79,7 +86,7 @@ SUPPORTED_CONVERSIONS: Dict[str, Dict[str, List[str]]] = {
         "ppt": [".pptx", ".odp", ".pdf"],
         "txt": [".doc", ".docx", ".rtf", ".odt", ".pdf", ".xls", ".xlsx"],
         "rtf": [".doc", ".docx", ".txt", ".odt"],
-        "html": [".pdf", ".doc", ".docx"]
+        "html": [".pdf", ".doc", ".docx"],
     },
     "audio": {
         "mp3": [".mp3", ".wav", ".aac", ".flac", ".m4a", ".ogg", ".wma"],
@@ -87,8 +94,8 @@ SUPPORTED_CONVERSIONS: Dict[str, Dict[str, List[str]]] = {
         "aac": [".aac", ".mp3", ".wav", ".m4a", ".flac"],
         "flac": [".flac", ".wav", ".mp3", ".aac"],
         "ogg": [".ogg", ".mp3", ".wav", ".flac"],
-        "m4a": [".m4a", ".mp3", ".wav", ".aac"]
-    }
+        "m4a": [".m4a", ".mp3", ".wav", ".aac"],
+    },
 }
 
 # Python 脚本转换映射

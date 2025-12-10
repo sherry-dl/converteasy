@@ -1,7 +1,6 @@
-import os
 import sys
 from pathlib import Path
-import asyncio
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -11,10 +10,11 @@ APP_DIR = BASE_DIR / "app"
 sys.path.insert(0, str(BASE_DIR))
 sys.path.insert(0, str(APP_DIR))
 
-# Configure temp dirs BEFORE importing app to avoid StaticFiles error
-from app.config import settings
+from app.config import settings  # noqa: E402
+
 TMP_UPLOAD = None
 TMP_PUBLIC = None
+
 
 def _prepare_temp_dirs(tmp_path_factory):
     global TMP_UPLOAD, TMP_PUBLIC
@@ -31,6 +31,7 @@ def _prepare_temp_dirs(tmp_path_factory):
 
 app = None
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_session_dirs(tmp_path_factory):
     """Session-level: create temp dirs, patch settings, and import app."""
@@ -38,8 +39,10 @@ def setup_session_dirs(tmp_path_factory):
     _prepare_temp_dirs(tmp_path_factory)
     # Now import the app after directories are set up
     from app.main import app as fastapi_app
+
     app = fastapi_app
     return
+
 
 @pytest.fixture(autouse=True)
 def setup_dirs(monkeypatch):

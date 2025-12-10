@@ -36,16 +36,16 @@ Page({
     fileList: [],
     converting: false,
     progress: 0,
-    progressText: "",
+    progressText: '',
     formatDisplayNames: AUDIO_FORMAT_DISPLAY_NAMES,
 
     // 播放器状态
     showPreviewModal: false,
-    previewSrc: "",
-    previewName: "",
+    previewSrc: '',
+    previewName: '',
     isPlaying: false,
-    currentTimeStr: "00:00",
-    durationStr: "00:00",
+    currentTimeStr: '00:00',
+    durationStr: '00:00',
     currentProgress: 0,
     duration: 0,
     isSliding: false // 防止拖动进度条时被自动更新打断
@@ -73,7 +73,7 @@ Page({
         });
       }
     } catch (error) {
-      console.warn("加载支持的格式失败，使用默认配置:", error);
+      console.warn('加载支持的格式失败，使用默认配置:', error);
     }
   },
 
@@ -137,9 +137,9 @@ Page({
         path: file.path,
         name: file.name,
         size: formatSize(file.size),
-        status: "pending",
+        status: 'pending',
         taskId: undefined,
-        downloadUrl: undefined,
+        downloadUrl: undefined
       });
     }
 
@@ -161,17 +161,17 @@ Page({
       return;
     }
 
-    this.setData({ converting: true, progress: 0, progressText: "准备转换..." });
+    this.setData({ converting: true, progress: 0, progressText: '准备转换...' });
 
     const total = this.data.fileList.length;
     let done = 0;
 
     for (let i = 0; i < this.data.fileList.length; i++) {
       const item = this.data.fileList[i];
-      if (item.status !== "pending") continue;
+      if (item.status !== 'pending') continue;
 
       const next = [...this.data.fileList];
-      next[i] = { ...item, status: "processing" };
+      next[i] = { ...item, status: 'processing' };
       this.setData({ fileList: next });
 
       try {
@@ -190,14 +190,14 @@ Page({
         this.setData({ progress, progressText: `已转换 ${done}/${total} 个文件` });
       } catch (err) {
         const nextErr = [...this.data.fileList];
-        nextErr[i] = { ...nextErr[i], status: "error" };
+        nextErr[i] = { ...nextErr[i], status: 'error' };
         this.setData({ fileList: nextErr });
         showToast(`文件 ${item.name} 转换失败`);
       }
     }
 
-    this.setData({ converting: false, progressText: "转换完成" });
-    wx.showToast({ title: "批量转换完成", icon: "success" });
+    this.setData({ converting: false, progressText: '转换完成' });
+    wx.showToast({ title: '批量转换完成', icon: 'success' });
   },
 
   async _pollTask(index, taskId) {
@@ -213,27 +213,27 @@ Page({
         this.setData({ progress: smooth, progressText: `正在转换...` });
       }
 
-      if (status.state === "finished" && status.url) {
+      if (status.state === 'finished' && status.url) {
         const next = [...this.data.fileList];
-        next[index] = { ...next[index], status: "success", downloadUrl: status.url, taskId };
-        this.setData({ fileList: next, progress: 100, progressText: "转换完成" });
+        next[index] = { ...next[index], status: 'success', downloadUrl: status.url, taskId };
+        this.setData({ fileList: next, progress: 100, progressText: '转换完成' });
         return;
       }
 
-      if (status.state === "error") {
+      if (status.state === 'error') {
         const nextErr = [...this.data.fileList];
-        nextErr[index] = { ...nextErr[index], status: "error" };
+        nextErr[index] = { ...nextErr[index], status: 'error' };
         this.setData({ fileList: nextErr });
-        throw new Error(status.message || "转换失败");
+        throw new Error(status.message || '转换失败');
       }
 
       await new Promise((r) => setTimeout(r, 500));
     }
 
     const nextErr = [...this.data.fileList];
-    nextErr[index] = { ...nextErr[index], status: "error" };
+    nextErr[index] = { ...nextErr[index], status: 'error' };
     this.setData({ fileList: nextErr });
-    throw new Error("转换超时");
+    throw new Error('转换超时');
   },
 
   // ========== 文件操作：下载与分享 ==========
@@ -277,7 +277,7 @@ Page({
     if (!item || !item.downloadUrl) return;
 
     // 必须先下载到本地临时路径，才能进行文件卡片转发
-    showLoading("准备文件...");
+    showLoading('准备文件...');
 
     try {
       const downloadUrl = normalizeFileUrl(item.downloadUrl);
@@ -290,13 +290,13 @@ Page({
           filePath: tempPath,
           fileName: item.name, // 确保转发时显示正确的文件名
           success: () => {
-             console.log('转发成功');
+            console.log('转发成功');
           },
           fail: (err) => {
-             // 用户取消或失败
-             if(err.errMsg && !err.errMsg.includes('cancel')){
-               showToast("无法调起分享");
-             }
+            // 用户取消或失败
+            if (err.errMsg && !err.errMsg.includes('cancel')) {
+              showToast('无法调起分享');
+            }
           }
         });
       } else {
@@ -305,15 +305,15 @@ Page({
       }
     } catch (err) {
       hideLoading();
-      showToast("文件下载失败，无法分享");
+      showToast('文件下载失败，无法分享');
     }
   },
 
   _copyLinkFallback(url) {
     wx.setClipboardData({
       data: url,
-      success: () => showToast("版本过低，链接已复制"),
-      fail: () => showToast("分享失败")
+      success: () => showToast('版本过低，链接已复制'),
+      fail: () => showToast('分享失败')
     });
   },
 
@@ -324,7 +324,7 @@ Page({
     const item = this.data.fileList[index];
     if (!item || !item.downloadUrl) return;
 
-    showLoading("加载音频...");
+    showLoading('加载音频...');
 
     try {
       const downloadUrl = normalizeFileUrl(item.downloadUrl);
@@ -333,8 +333,8 @@ Page({
 
       this.setData({
         previewSrc: tempPath,
-        previewName: item.name || "音频预览",
-        showPreviewModal: true,
+        previewName: item.name || '音频预览',
+        showPreviewModal: true
       });
 
       // 初始化播放器
@@ -342,7 +342,7 @@ Page({
 
     } catch (err) {
       hideLoading();
-      showToast("加载失败，无法预览");
+      showToast('加载失败，无法预览');
     }
   },
 
@@ -351,26 +351,26 @@ Page({
     if (this._audioContext) {
       this._audioContext.destroy();
     }
-    
+
     const ctx = wx.createInnerAudioContext();
     ctx.src = src;
-    
+
     // 监听状态
     ctx.onPlay(() => this.setData({ isPlaying: true }));
     ctx.onPause(() => this.setData({ isPlaying: false }));
-    ctx.onStop(() => this.setData({ isPlaying: false, currentProgress: 0, currentTimeStr: "00:00" }));
-    ctx.onEnded(() => this.setData({ isPlaying: false, currentProgress: 0, currentTimeStr: "00:00" }));
-    
+    ctx.onStop(() => this.setData({ isPlaying: false, currentProgress: 0, currentTimeStr: '00:00' }));
+    ctx.onEnded(() => this.setData({ isPlaying: false, currentProgress: 0, currentTimeStr: '00:00' }));
+
     // 监听进度更新
     ctx.onTimeUpdate(() => {
       // 如果正在拖动滑块，则不更新进度条，避免跳动
-      if (this.data.isSliding) return; 
+      if (this.data.isSliding) return;
 
       const currentTime = ctx.currentTime;
       const duration = ctx.duration;
       // 避免除以0
       const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
-      
+
       this.setData({
         currentTimeStr: formatTime(currentTime),
         durationStr: formatTime(duration),
@@ -411,7 +411,7 @@ Page({
   },
 
   // 正在拖动进度条
-  sliderChanging(e) {
+  sliderChanging(_e) {
     this.setData({ isSliding: true });
   },
 
@@ -425,17 +425,17 @@ Page({
     if (this._audioContext) {
       this._audioContext.stop();
     }
-    this.setData({ 
+    this.setData({
       showPreviewModal: false,
       isPlaying: false,
-      previewSrc: "",
-      previewName: "",
+      previewSrc: '',
+      previewName: '',
       currentProgress: 0,
-      currentTimeStr: "00:00",
-      durationStr: "00:00"
+      currentTimeStr: '00:00',
+      durationStr: '00:00'
     });
   },
 
   // 阻止冒泡
-  stopProp() {}
+  stopProp() { }
 });

@@ -36,13 +36,13 @@ python tests/gen_samples.py
 
    **Linux/Mac:**
 
-   ```
+   ```text
    /home/jared/converteasy/backend
    ```
 
    **Windows:**
 
-   ```
+   ```text
    C:/Users/YourName/converteasy/backend
    ```
 
@@ -111,13 +111,13 @@ python tests/gen_samples.py
 
 所有文件上传请求使用以下格式：
 
-```
+```text
 {{projectRoot}}/tests/samples/sample.pdf
 ```
 
 运行时 Postman 会将其解析为：
 
-```
+```text
 /home/jared/converteasy/backend/tests/samples/sample.pdf
 ```
 
@@ -149,7 +149,7 @@ python tests/gen_samples.py
 3. 确认 `tests/samples/` 目录存在且包含样例文件
 4. 保存后重新运行测试
 
-### 问题：文件路径显示为 {{projectRoot}}/tests/samples/...
+### 问题：文件路径显示为 {{projectRoot}}/tests/samples/
 
 **原因**：变量未被正确解析
 

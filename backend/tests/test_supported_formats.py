@@ -7,11 +7,13 @@ def test_supported_formats_all(client):
     assert isinstance(data["document"]["allowedExtensions"], list)
     assert isinstance(data["audio"]["allowedExtensions"], list)
 
+
 def test_supported_formats_document_only(client):
     resp = client.get("/supported-formats", params={"category": "document"})
     assert resp.status_code == 200
     data = resp.json()
     assert "document" in data and "audio" not in data
+
 
 def test_supported_formats_invalid_category(client):
     resp = client.get("/supported-formats", params={"category": "video"})

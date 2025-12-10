@@ -71,7 +71,7 @@ sudo apt-get install libreoffice-core libreoffice-writer libreoffice-calc libreo
 ```
 
 **Windows:**
-下载安装包：https://www.libreoffice.org/download/download-libreoffice/
+下载安装包：<https://www.libreoffice.org/download/download-libreoffice/>
 
 #### FFmpeg（音频转换）
 
@@ -250,7 +250,7 @@ docker run -d \
 
 ## 📁 项目结构
 
-```
+```text
 backend/
 ├── app/
 │   ├── __init__.py

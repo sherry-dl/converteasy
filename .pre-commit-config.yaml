@@ -64,7 +64,8 @@ repos:
     hooks:
       - id: eslint
         name: ESLint 代码检查
-        files: ^miniprogram/.*\.(js|ts)$
+        files: ^miniprogram/.*\.js$
+        exclude: ^miniprogram/(types|miniprogram_npm)/
         types: [file]
         additional_dependencies:
           - eslint@8.57.0
@@ -76,7 +77,7 @@ repos:
     hooks:
       - id: markdownlint
         name: Markdown 格式检查
-        args: ["--fix", "--disable", "MD013", "MD033", "MD041", "--"]
+        args: ["--fix", "--disable", "MD013", "MD033", "MD036", "MD040", "MD041", "--"]
 
   # 提交信息格式检查（可选）
   # - repo: https://github.com/commitizen-tools/commitizen

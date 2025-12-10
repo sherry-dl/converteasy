@@ -24,7 +24,7 @@ function chooseMessageFile(allowedExt, count = 9) {
 
     wx.chooseMessageFile({
       count,
-      type: "file",
+      type: 'file',
       extension: normalizedExt.length > 0 ? normalizedExt : undefined,
       success: (res) => {
         console.log('chooseMessageFile - 选择成功:', res.tempFiles);
@@ -99,11 +99,11 @@ function openDocument(filePath, showMenu = true) {
       filePath,
       showMenu,
       success: () => {
-        console.log("文档打开成功");
+        console.log('文档打开成功');
         resolve();
       },
       fail: (err) => {
-        console.error("文档打开失败:", err);
+        console.error('文档打开失败:', err);
         reject(err);
       }
     });
@@ -122,7 +122,7 @@ function shareFile(filePath, fallbackUrl) {
       wx.shareFileMessage({
         filePath,
         success: () => {
-          console.log("文件分享成功");
+          console.log('文件分享成功');
           resolve();
         },
         fail: (shareErr) => {
@@ -131,7 +131,7 @@ function shareFile(filePath, fallbackUrl) {
           if (fallbackUrl) {
             copyToClipboard(fallbackUrl).then(resolve).catch(reject);
           } else {
-            reject(new Error("分享失败"));
+            reject(new Error('分享失败'));
           }
         }
       });
@@ -139,7 +139,7 @@ function shareFile(filePath, fallbackUrl) {
       // 不支持 shareFileMessage，直接复制链接
       copyToClipboard(fallbackUrl).then(resolve).catch(reject);
     } else {
-      reject(new Error("不支持文件分享"));
+      reject(new Error('不支持文件分享'));
     }
   });
 }
@@ -169,7 +169,7 @@ async function tryOpenDocument(tempPath, fileName) {
     try {
       await openDocument(tempPath, true);
     } catch (err) {
-      showToast("文件已下载但无法打开", 'none');
+      showToast('文件已下载但无法打开', 'none');
     }
   } else {
     showToast(`文件已下载，请在文件管理中查看`, 'none', 3000);
@@ -183,7 +183,7 @@ async function tryOpenDocument(tempPath, fileName) {
  * @returns {Promise<void>}
  */
 async function downloadAndSaveFile(fileUrl, fileName) {
-  showLoading("下载中...");
+  showLoading('下载中...');
 
   try {
     const tempPath = await downloadFile(fileUrl);
@@ -191,14 +191,14 @@ async function downloadAndSaveFile(fileUrl, fileName) {
 
     try {
       await saveFile(tempPath, fileName);
-      showToast("下载成功", 'success');
+      showToast('下载成功', 'success');
     } catch (saveErr) {
       // 保存失败时尝试直接打开
       await tryOpenDocument(tempPath, fileName);
     }
   } catch (err) {
     hideLoading();
-    showToast("下载失败", 'none');
+    showToast('下载失败', 'none');
     throw err;
   }
 }
@@ -210,7 +210,7 @@ async function downloadAndSaveFile(fileUrl, fileName) {
  * @returns {Promise<void>}
  */
 async function previewDocument(fileUrl, fileName) {
-  showLoading("加载中...");
+  showLoading('加载中...');
 
   try {
     const tempPath = await downloadFile(fileUrl);
@@ -220,7 +220,7 @@ async function previewDocument(fileUrl, fileName) {
       await openDocument(tempPath, true);
     } catch (err) {
       const fileExt = getExt(fileName).toLowerCase();
-      let errorMsg = "预览失败";
+      let errorMsg = '预览失败';
       if (err && err.errMsg && err.errMsg.includes('filetype not supported')) {
         errorMsg = `微信不支持预览 ${fileExt} 格式文件`;
       }
@@ -228,7 +228,7 @@ async function previewDocument(fileUrl, fileName) {
     }
   } catch (err) {
     hideLoading();
-    showToast("预览失败，请重试", 'none');
+    showToast('预览失败，请重试', 'none');
     throw err;
   }
 }
@@ -239,7 +239,7 @@ async function previewDocument(fileUrl, fileName) {
  * @returns {Promise<void>}
  */
 async function shareRemoteFile(fileUrl) {
-  showLoading("准备分享...");
+  showLoading('准备分享...');
 
   try {
     const tempPath = await downloadFile(fileUrl);

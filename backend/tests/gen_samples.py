@@ -2,6 +2,7 @@
 Generate small sample files for conversion testing.
 Outputs to `backend/tests/samples/`.
 """
+
 from pathlib import Path
 
 SAMPLES_DIR = Path(__file__).parent / "samples"
@@ -9,7 +10,9 @@ SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def make_txt():
-    (SAMPLES_DIR / "sample.txt").write_text("Hello ConvertEasy!\n这是一个测试文本。\n", encoding="utf-8")
+    (SAMPLES_DIR / "sample.txt").write_text(
+        "Hello ConvertEasy!\n这是一个测试文本。\n", encoding="utf-8"
+    )
 
 
 def make_html():
@@ -67,22 +70,22 @@ def make_mp3():
     """Generate tiny MP3 using FFmpeg if available, else skip"""
     import subprocess
     import shutil
-    
+
     if not shutil.which("ffmpeg"):
         print("FFmpeg not found; skip MP3 generation")
         return
-    
+
     # Generate from WAV
     wav_path = SAMPLES_DIR / "sample.wav"
     if not wav_path.exists():
         make_wav()
-    
+
     mp3_path = SAMPLES_DIR / "sample.mp3"
     try:
         subprocess.run(
             ["ffmpeg", "-y", "-i", str(wav_path), "-b:a", "64k", str(mp3_path)],
             check=True,
-            capture_output=True
+            capture_output=True,
         )
         print(f"✓ Generated {mp3_path}")
     except subprocess.CalledProcessError as e:
@@ -97,7 +100,7 @@ def make_pdf():
     except ImportError:
         print("reportlab not installed; skip PDF generation")
         return
-    
+
     pdf_path = SAMPLES_DIR / "sample.pdf"
     c = canvas.Canvas(str(pdf_path), pagesize=A4)
     c.setFont("Helvetica", 16)

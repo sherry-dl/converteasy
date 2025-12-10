@@ -1,6 +1,6 @@
 <view class="container">
   <view class="title">🎵 音频转换</view>
-  
+
   <view class="card">
     <view class="subtitle">选择源文件格式</view>
     <view class="format-grid">
@@ -92,7 +92,7 @@
       <view class="sheet-title">{{previewName}}</view>
       <view class="close-btn" bindtap="closePreview">×</view>
     </view>
-    
+
     <view class="sheet-body">
       <view class="custom-player">
         <view class="play-btn" bindtap="togglePlay">
@@ -100,16 +100,16 @@
         </view>
         <view class="progress-info">
           <text>{{currentTimeStr}}</text>
-          <slider class="audio-slider" 
-                  value="{{currentProgress}}" 
-                  bindchange="seekAudio" 
+          <slider class="audio-slider"
+                  value="{{currentProgress}}"
+                  bindchange="seekAudio"
                   bindchanging="sliderChanging"
-                  block-size="12" 
+                  block-size="12"
                   activeColor="#667eea"/>
           <text>{{durationStr}}</text>
         </view>
       </view>
-      
+
       <view class="sheet-info">
         <view class="muted">点击按钮播放/暂停</view>
       </view>

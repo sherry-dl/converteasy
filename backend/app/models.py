@@ -1,6 +1,7 @@
 """
 数据模型定义
 """
+
 from enum import Enum
 from typing import Optional
 from datetime import datetime
@@ -9,12 +10,14 @@ from pydantic import BaseModel, Field
 
 class Category(str, Enum):
     """文件分类"""
+
     DOCUMENT = "document"
     AUDIO = "audio"
 
 
 class TaskState(str, Enum):
     """任务状态"""
+
     QUEUED = "queued"
     PROCESSING = "processing"
     FINISHED = "finished"
@@ -23,6 +26,7 @@ class TaskState(str, Enum):
 
 class ConvertTask(BaseModel):
     """转换任务模型"""
+
     id: str
     state: TaskState = TaskState.QUEUED
     created_at: datetime = Field(default_factory=datetime.now)
@@ -41,12 +45,14 @@ class ConvertTask(BaseModel):
 
 class UploadResponse(BaseModel):
     """上传响应"""
+
     taskId: str
     message: str
 
 
 class TaskStatusResponse(BaseModel):
     """任务状态响应"""
+
     state: TaskState
     url: Optional[str] = None
     downloadUrl: Optional[str] = None
@@ -56,12 +62,14 @@ class TaskStatusResponse(BaseModel):
 
 class SupportedFormatsResponse(BaseModel):
     """支持格式响应"""
+
     allowedExtensions: list[str]
     supportedConversions: dict[str, list[str]]
 
 
 class DetectTargetsResponse(BaseModel):
     """检测目标格式响应"""
+
     filename: str
     category: Category
     sourceExtension: str
@@ -71,5 +79,6 @@ class DetectTargetsResponse(BaseModel):
 
 class ErrorResponse(BaseModel):
     """错误响应"""
+
     message: str
     supportedTargets: Optional[list[str]] = None
