@@ -8,9 +8,12 @@ import sys
 import os
 import argparse
 import base64
+import logging
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
+
+logger = logging.getLogger(__name__)
 
 
 def docx_to_html(input_path, output_path):
@@ -110,8 +113,8 @@ def _get_run_font_family(run):
             cs = rFonts.get(qn("w:cs"))
             if cs and cs.strip():
                 return cs.strip()
-    except:
-        pass
+    except Exception:
+        logger.exception("Get run font family failed")
 
     return None
 
@@ -130,8 +133,8 @@ def _get_run_font_size(run):
                 # Word 中字号是半磅单位，除以 2 得到点数
                 pt = int(val) / 2
                 return int(pt)
-    except:
-        pass
+    except Exception:
+        logger.exception("Get run font size failed")
 
     return None
 
@@ -148,8 +151,8 @@ def _get_run_color(run):
             val = color_elem.get(qn("w:val"))
             if val and val.lower() != "auto":
                 return f"#{val}"
-    except:
-        pass
+    except Exception:
+        logger.exception("Get run color failed")
 
     return None
 
@@ -161,7 +164,8 @@ def _get_run_bold(run):
         if rPr is None:
             return False
         return rPr.find(qn("w:b")) is not None
-    except:
+    except Exception:
+        logger.exception("Get run bold failed")
         return False
 
 
@@ -172,7 +176,8 @@ def _get_run_italic(run):
         if rPr is None:
             return False
         return rPr.find(qn("w:i")) is not None
-    except:
+    except Exception:
+        logger.exception("Get run italic failed")
         return False
 
 
@@ -183,7 +188,8 @@ def _get_run_underline(run):
         if rPr is None:
             return False
         return rPr.find(qn("w:u")) is not None
-    except:
+    except Exception:
+        logger.exception("Get run underline failed")
         return False
 
 
@@ -194,7 +200,8 @@ def _get_run_strike(run):
         if rPr is None:
             return False
         return rPr.find(qn("w:strike")) is not None
-    except:
+    except Exception:
+        logger.exception("Get run strike failed")
         return False
 
 
@@ -275,8 +282,8 @@ def _extract_images_from_run(run, doc):
                         print(f"  ✓ 内联图片: {len(image_bytes)} 字节")
                     except Exception as e:
                         print(f"  ⚠ 图片提取异常: {e}")
-    except:
-        pass
+    except Exception:
+        logger.exception("Extract images from run failed")
 
     return images
 
@@ -328,7 +335,8 @@ def _convert_paragraph(para, doc):
         try:
             content = _convert_runs(para, doc)
             return f"  <p>{content}</p>"
-        except:
+        except Exception:
+            logger.exception("Convert paragraph failed")
             return ""
 
 
